@@ -1,0 +1,17 @@
+{
+    "display_name": "Syntax Highlighting (NG)",
+    "module_name": "syntax_highlighting_ng",
+    "repo_name": "syntax-highlighting_ng",
+    "ankiweb_id": "999999",
+    "author": "cav71",
+    "contact": "https://glutanimate.com",
+    "homepage": "https://github.com/cav71/syntax-highlighting-ng",
+    "copyright_start": 2023,
+    "tags": "code programming syntax-highlighting editor",
+    "conflicts": [
+        "syntax_highlighting_ng"
+    ],
+    "targets": [
+        "anki21"
+    ]
+}
