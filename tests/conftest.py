@@ -21,13 +21,13 @@ def assets(request):
                     return target
 
         def read_text(self, path: Path | str, fallback: str|None=None) -> str|None:
-            if dest := self.lookup(path):
-                return dest.read_text()
+            dest = self.lookup(path)
             if fallback is not None:
-                dest = self.basedir / self.candidates[0] / path
+                dest = dest or (self.basedir / self.candidates[0] / path)
                 dest.parent.mkdir(exist_ok=True, parents=True)
                 dest.write_text(fallback)
-                return dest.read_text()
+
+            return dest.read_text()
 
 
     return Asset()
