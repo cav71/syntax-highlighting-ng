@@ -1,0 +1,14 @@
+pytest
+attrs
+jsonschema
+six
+whichcraft
+pygments
+ruff
+black
+mypy
+pre-commit
+# need to run also:
+#   conda uninstall --force rpds-py
+#   pip install rpds-py
+#   pip install aab
