@@ -17,6 +17,14 @@ If you enjoy Syntax Highlighting, please consider supporting my work on Patreon,
 
 
 ## [Unreleased]
+## [0.0.2] - 2023-12-19
+
+### Added
+
+- rendering refactored (fixed a bug in pygments)
+- added more tests
+
+
 ## [0.0.1] - 2023-12-19
 
 ### Added
@@ -41,5 +49,6 @@ If you enjoy Syntax Highlighting, please consider supporting my work on Patreon,
 
 
 [Unreleased]: https://github.com/cav71/syntax-highlighting-ng/compare/v0.0.1...HEAD
+[0.0.2]: https://github.com/cav71/syntax-highlighting-ng/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/cav71/syntax-highlighting-ng/compare/v0.0.0-beta...v0.0.1
 
