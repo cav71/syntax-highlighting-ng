@@ -22,7 +22,7 @@ from ._version import __version__  # noqa: F401
 STANDALONE = False
 try:
     from . import main  # noqa: F401
-except Exception:
+except ModuleNotFoundError:
     if not os.environ.get("STANDALONE_ADDON") == "1":
         raise
     STANDALONE = True
