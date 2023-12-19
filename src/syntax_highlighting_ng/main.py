@@ -18,7 +18,7 @@ import os
 import sys
 import re
 import json
-
+import traceback
 
 from . import config, consts
 
@@ -27,10 +27,7 @@ from . import config, consts
 # other add-ons that might be shipping their own pygments
 sys.path.insert(0, os.path.join(consts.addon_path, "libs"))
 
-from pygments import highlight
-from pygments.lexers import get_lexer_by_name, get_all_lexers
-from pygments.formatters import HtmlFormatter
-from pygments.util import ClassNotFound
+from pygments.lexers import get_all_lexers
 
 from aqt.qt import *
 from aqt import mw
@@ -55,12 +52,6 @@ ERR_LEXER = (
     "<b>Error</b>: Selected language not found.<br>"
     "If you set a custom lang selection please make sure<br>"
     "you typed all list entries correctly."
-)
-
-ERR_STYLE = (
-    "<b>Error</b>: Selected style not found.<br>"
-    "If you set a custom style please make sure<br>"
-    "you typed it correctly."
 )
 
 
@@ -359,6 +350,8 @@ def onBridgeCmd(ed, cmd, _old):
 
 
 def highlight_code(ed):
+    from . import html_render
+
     addon_conf = mw.col.conf[config.KEY]
 
     #  Do we want line numbers? linenos is either true or false according
@@ -386,42 +379,32 @@ def highlight_code(ed):
         # Get the code from the clipboard
         code = clipboard.text()
 
-    # NOTE: we specify the language to highlight for
-    langAlias = ed.codeHighlightLangAlias
-
     # Select the lexer for the correct language
+    style = html_render.Style(
+        # NOTE: we specify the language to highlight for
+        language=ed.codeHighlightLangAlias,
+        style=STYLE,
+        linenos="inline" if linenos is True else linenos,
+        noclasses=noclasses,
+    )
     try:
-        my_lexer = get_lexer_by_name(langAlias, stripall=True)
-    except ClassNotFound as e:
-        print(e)
-        showError(ERR_LEXER, parent=ed.parentWindow)
-        return False
-
-    # Create html formatter object including flags for line nums and css classes
-    try:
-        my_formatter = HtmlFormatter(
-            linenos=linenos, noclasses=noclasses, font_size=16, style=STYLE
-        )
-    except ClassNotFound as e:
-        print(e)
-        showError(ERR_STYLE, parent=ed.parentWindow)
+        processed = html_render.render_string(code, style=style)
+    except (html_render.LanguageNotFound, html_render.InvalidStyle) as e:
+        print("".join(traceback.format_exc()))
+        showError(e.render(), parent=ed.parentWindow)
         return False
 
     if linenos:
         if centerfragments:
-            pretty_code = "".join(
-                ["<center>", highlight(code, my_lexer, my_formatter), "</center><br>"]
-            )
+            pretty_code = "".join(["<center>", processed, "</center><br>"])
         else:
-            pretty_code = "".join([highlight(code, my_lexer, my_formatter), "<br>"])
+            pretty_code = "".join([processed, "<br>"])
     # TODO: understand why this is neccessary
     else:
         if centerfragments:
-            pretty_code = "".join(
-                ["<center>", highlight(code, my_lexer, my_formatter), "</center><br>"]
-            )
+            pretty_code = "".join(["<center>", processed, "</center><br>"])
         else:
-            pretty_code = "".join([highlight(code, my_lexer, my_formatter), "<br>"])
+            pretty_code = "".join([processed, "<br>"])
 
     pretty_code = process_html(pretty_code)
 
