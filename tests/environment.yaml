@@ -8,6 +8,7 @@ ruff
 black
 mypy
 pre-commit
+bs4
 # need to run also:
 #   conda uninstall --force rpds-py
 #   pip install rpds-py
