@@ -185,7 +185,7 @@ class SyntaxHighlightingOptions(QDialog):  # type: ignore
         self.setWindowTitle("Syntax Highlighting Options")
 
 
-def onOptionsCall(mw):
+def onOptionsCall(mw: AnkiQt) -> None:
     """Call settings dialog"""
     dialog = SyntaxHighlightingOptions(mw)
     dialog.exec_()
@@ -202,6 +202,12 @@ mw.form.menuTools.addAction(options_action)
 def init_highlighter(ed: Editor, *args, **kwargs):
     # Get the last selected language (or the default language if the user
     # has never chosen any)
+    import sys
+
+    sys.path.insert(0, "/Users/antonio/shared/pydevd-2.10.0")
+    import pydevd
+
+    pydevd.settrace("localhost", port=12345, stdoutToServer=True, stderrToServer=True)
 
     previous_lang = get_default_lang(mw)
     ed.codeHighlightLangAlias = LANGUAGES_MAP.get(previous_lang, "")
