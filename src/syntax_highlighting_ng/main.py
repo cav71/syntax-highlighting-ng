@@ -14,6 +14,7 @@ License: GNU AGPLv3 <https://www.gnu.org/licenses/agpl.html>
 
 from __future__ import unicode_literals, annotations
 
+import contextlib
 import functools
 import os
 import sys
@@ -32,6 +33,7 @@ from pygments.lexers import get_all_lexers
 
 from aqt.qt import *
 from aqt import mw
+from aqt.main import AnkiQt
 from aqt.editor import Editor
 from aqt.utils import showWarning
 from anki.hooks import addHook, wrap
@@ -92,17 +94,14 @@ def ui_code(fn):
 # Synced options and corresponding dialogs
 
 
-def get_deck_name(mw):
-    deck_name = None
-    try:
-        deck_name = mw.col.decks.current()["name"]
-    except AttributeError:
-        # No deck opened?
-        deck_name = None
-    return deck_name
+def get_deck_name(mw: AnkiQt) -> str | None:
+    with contextlib.suppress(AttributeError):
+        return mw.col.decks.current()["name"]
+    # No deck opened?
+    return None
 
 
-def get_default_lang(mw):
+def get_default_lang(mw: AnkiQt) -> str:
     addon_conf = mw.col.conf[config.KEY]
     lang = addon_conf["lang"]
     if addon_conf["defaultlangperdeck"]:
@@ -112,7 +111,7 @@ def get_default_lang(mw):
     return lang
 
 
-def set_default_lang(mw, lang):
+def set_default_lang(mw: AnkiQt, lang: str) -> None:
     addon_conf = mw.col.conf[config.KEY]
     addon_conf["lang"] = lang  # Always update the overall default
     if addon_conf["defaultlangperdeck"]:
@@ -200,9 +199,16 @@ mw.form.menuTools.addAction(options_action)
 # Highlighter initialization
 
 
-def init_highlighter(ed, *args, **kwargs):
+def init_highlighter(ed: Editor, *args, **kwargs):
     # Get the last selected language (or the default language if the user
     # has never chosen any)
+    import sys
+
+    sys.path.insert(0, "/Users/antonio/shared/pydevd-2.10.0")
+    import pydevd
+
+    pydevd.settrace("localhost", port=12345, stdoutToServer=True, stderrToServer=True)
+
     previous_lang = get_default_lang(mw)
     ed.codeHighlightLangAlias = LANGUAGES_MAP.get(previous_lang, "")
 
