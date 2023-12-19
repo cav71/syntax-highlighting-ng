@@ -2,12 +2,30 @@
 
 > **NOTE** These are my personal note!!!
 
+## Init
+
+### setup conda env
+
+1. base env
+   ```bash
+   conda create -n syntax-highlighting-ng --file tests/environment.yaml
+   ```
+
+2. remove old pakage and install using pip newer:
+   ```bash
+   conda uninstall --force rpds-py
+   pip install rpds-py aab
+   ```
+
+### prepare the addon to Anki
+
 Quick cycle install:
 
 1. build
    ```bash
    aab build
    ```
+
 2. Install from GUI *from file* 
    
    **build/syntax-highlighting_ng-7b6cdd2-anki21.ankiaddon**
@@ -51,5 +69,11 @@ Debug:
 
 1. use:
    ```python
-   pydevd_pycharm.settrace('localhost', port=12345, stdoutToServer=True, stderrToServer=True)
+   import sys; sys.path.insert(0, "/Users/antonio/shared/pydevd-2.10.0")
+   import pydevd; pydevd.settrace('localhost', port=12345, stdoutToServer=True, stderrToServer=True)
+   ```
+
+2. launch app
+   ```bash
+   PYDEVD_DISABLE_FILE_VALIDATION=1 open /Applications/Anki.app
    ```
