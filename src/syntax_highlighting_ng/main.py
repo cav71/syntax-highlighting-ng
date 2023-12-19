@@ -12,8 +12,9 @@ Copyright: (c) 2012-2015 Tiago Barroso <https://github.com/tmbb>
 License: GNU AGPLv3 <https://www.gnu.org/licenses/agpl.html>
 """
 
-from __future__ import unicode_literals
+from __future__ import unicode_literals, annotations
 
+import functools
 import os
 import sys
 import re
@@ -48,18 +49,44 @@ LIMITED_LANGS = config.local_conf["limitToLangs"]
 LANGUAGES_MAP = {lex[0]: lex[1][0] for lex in get_all_lexers()}
 
 
-ERR_LEXER = (
-    "<b>Error</b>: Selected language not found.<br>"
-    "If you set a custom lang selection please make sure<br>"
-    "you typed all list entries correctly."
-)
-
-
 # Misc
 
 
 def showError(msg, parent):
     showWarning(msg, title="Syntax Highlighting Error", parent=parent)
+
+
+def ui_code(fn):
+    """
+    A decorator for UI-related code in Python.
+
+    This decorator is used to handle exceptions related to UI
+    rendering and display an error messages.
+
+    Args:
+        fn: The function to be decorated (first argument must be Editor).
+
+    Returns:
+        Callable[[Editor, ...], Any]: handles UI-related exceptions.
+
+    Example usage:
+        @ui_code
+        def render_ui(ed, *args, **kwargs):
+            # UI code here
+    """
+
+    @functools.wraps(fn)
+    def _fn(ed: Editor, *args, **kwargs) -> None | bool:
+        from . import html_render
+
+        try:
+            return fn(ed, *args, **kwargs)
+        except (html_render.LanguageNotFound, html_render.InvalidStyle) as e:
+            print("".join(traceback.format_exc()))
+            showError(e.render(), parent=ed.parentWindow)
+        return False
+
+    return _fn
 
 
 # Synced options and corresponding dialogs
@@ -262,36 +289,15 @@ QSplitter.add_plugin_button_ = add_plugin_button_  # type: ignore
 QSplitter.add_code_langs_combobox = add_code_langs_combobox  # type: ignore
 
 
-def addWidgets20(ed, previous_lang):
-    # Add the buttons to the Icon Box
-    splitter = QSplitter()
-    splitter.add_plugin_button_(
-        ed,
-        "highlight_code",
-        lambda _: highlight_code(ed),
-        key=HOTKEY,
-        text="",
-        icon=icon_path,
-        tip=_("Paste highlighted code ({})".format(HOTKEY)),
-        check=False,
-    )
-    splitter.add_code_langs_combobox(
-        lambda lang: onCodeHighlightLangSelect(ed, lang), previous_lang
-    )
-    splitter.setFrameStyle(QFrame.Plain)
-    rect = splitter.frameRect()
-    splitter.setFrameRect(rect.adjusted(10, 0, -10, 0))
-    ed.iconsBox.addWidget(splitter)
-
-
+@ui_code
 def onCodeHighlightLangSelect(ed, lang):
+    from . import html_render
+
     try:
         alias = LANGUAGES_MAP[lang]
-    except KeyError as e:
-        print(e)
-        showError(ERR_LEXER, parent=ed.parentWindow)
+    except KeyError:
         ed.codeHighlightLangAlias = ""
-        return False
+        raise html_render.LanguageNotFound(lang)
     set_default_lang(mw, lang)
     ed.codeHighlightLangAlias = alias
 
@@ -349,6 +355,7 @@ def onBridgeCmd(ed, cmd, _old):
 # Actual code highlighting
 
 
+@ui_code
 def highlight_code(ed):
     from . import html_render
 
@@ -387,12 +394,8 @@ def highlight_code(ed):
         linenos="inline" if linenos is True else linenos,
         noclasses=noclasses,
     )
-    try:
-        processed = html_render.render_string(code, style=style)
-    except (html_render.LanguageNotFound, html_render.InvalidStyle) as e:
-        print("".join(traceback.format_exc()))
-        showError(e.render(), parent=ed.parentWindow)
-        return False
+
+    processed = html_render.render_string(code, style=style)
 
     if linenos:
         if centerfragments:
