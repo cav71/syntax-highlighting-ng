@@ -2,7 +2,7 @@
 
 Allows you to insert **syntax-highlighted code snippets** into your notes:
 
-![](https://raw.githubusercontent.com/glutanimate/syntax-highlighting/master/screenshots/screenshot_python.png)
+![](https://raw.githubusercontent.com/cav71/syntax-highlighting-ng/master/screenshots/screenshot_python.png)
 
 <!-- CHANGELOG -->
 
@@ -30,7 +30,7 @@ Currently there are four configuration options, available from Anki's main scree
 - **Center code fragments** (default: true): Whether or not to automatically center the code in the field
 - **Use CSS classes** (default: false): Whether or not to use CSS classes instead of inline HTML styles for syntax highlighting.
 
-    - Using css classes allows you more customization, and results in a smaller database size, but you'll need to manually adjust the styling, so it's only recommended for advanced users. You will find a selection of CSS styles that you can use in the [documentation on GitHub](https://github.com/glutanimate/syntax-highlighting/blob/master/docs/css.md). 
+    - Using css classes allows you more customization, and results in a smaller database size, but you'll need to manually adjust the styling, so it's only recommended for advanced users. You will find a selection of CSS styles that you can use in the [documentation on GitHub](https://github.com/cav71/syntax-highlighting-ng/blob/master/docs/css.md). 
     - For proper styling of *reviews* you need to include the relevant CSS styles in the Styling section of the card templates of every note type. At the time of the release of this add-on Anki can load css from an external file in your media folder if you use  a line like `@import url("_styles_for_syntax_highlighting.css");`, for details see [here](https://apps.ankiweb.net/docs/manual.html#media18). But loading css from an external file is not documented in the manual. It might break in the future.
     - For proper styling of the editor component in the *Add* window and at the bottom of the *Browser* window you need the add-on [Customize Editor Stylesheet](https://ankiweb.net/shared/info/1215991469) and copy the relevant styles to the file `_editor.css` file in your media collection. Add-ons don't work on AnkiMobile for iOS or Ankidroid for Android. If you use the css option you won't have syntax highlighting in the editor component.
 
@@ -54,9 +54,10 @@ These advanced settings do not sync and require a restart to apply.
 
 ### CREDITS AND LICENSE
 
-*Copyright © 2012-2015 [Tiago Barroso](https://github.com/tmbb)*
-*Copyright © 2015 [Tim Rae](https://github.com/timrae)*
+*Copyright © 2023- [Antonio Cavallo P.](https://github.com/cav71)  (Glutanimate)*
 *Copyright © 2018-2019 [Aristotelis P.](https://glutanimate.com/)  (Glutanimate)*
+*Copyright © 2015 [Tim Rae](https://github.com/timrae)*
+*Copyright © 2012-2015 [Tiago Barroso](https://github.com/tmbb)*
 
 *Syntax Highlighting* is based on [*Syntax Highlighting for Code*](https://github.com/tmbb/SyntaxHighlight) by [Tiago Barroso](https://github.com/tmbb). All credit for the original idea and implementation goes to him. A major thanks is also due to [Tim Rae](https://github.com/timrae), who extended the original add-on with CSS support.
 

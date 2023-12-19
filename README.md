@@ -1,27 +1,24 @@
-# syntax-highlighting new gen
+# syntax-highlighting (NG)
 
-[![Latest (pre-)release]((https://github.com/cav71/syntax-highlighting-ng/releases)
+[![Release](https://img.shields.io/github/downloads/cav71/syntax-highlighting-ng/total?logo=github&label=downloads)](https://github.com/cav71/syntax-highlighting-ng/releases)
 [![License - GNU AGPLv3](https://img.shields.io/badge/license-%20%20GNU%20AGPLv3%20-green)](https://spdx.org/licenses/AGPL-3.0-only.html)
+[![linting - Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![types - Mypy](https://img.shields.io/badge/types-Mypy-blue.svg)](https://github.com/python/mypy)
 
+This is a new fork from the original "*Syntax Highlighting for Code*" (see [License and Credits](#license-and-credits) below).
 
-This is a new fork from the original "*Syntax Highlighting for Code*" (see **References** below).
+This add-on allows you to insert syntax-highlighted code snippets into the spaced-repetition flashcard app [Anki](https://apps.ankiweb.net/).
 
-Allows you to insert syntax-highlighted code snippets into the spaced-repetition flashcard app [Anki](https://apps.ankiweb.net/).
-
-The main reasons to create it is:
-* fix these issues: \
-  [PR46](https://github.com/glutanimate/syntax-highlighting/issues/46) \
-  [PR47](https://github.com/glutanimate/syntax-highlighting/issues/47) \
+The main reasons are:
+* to fix these issues:
+  [PR46](https://github.com/glutanimate/syntax-highlighting/issues/46),
+  [PR47](https://github.com/glutanimate/syntax-highlighting/issues/47)
 * clean port to python 3
+* support for mypy/ruff linters
 * adds unittests
-* always target the latest Anki version (eg. 2.1)
+* always target the latest Anki version (eg. 2.1) and the latest Anki python version (at the moment 3.9)
 
 <p align="center"><img src="screenshots/screenshot_python.png"></p>
-
-
-**References**
-* Syntax Highlighting for Code [release](https://ankiweb.net/shared/info/1463041493)
-* syntax highlighting FORK (css only, night-mode) [release](https://ankiweb.net/shared/info/1100811177)
 
 
 ### Table of Contents <!-- omit in toc -->
@@ -40,7 +37,7 @@ The main reasons to create it is:
 
 #### AnkiWeb <!-- omit in toc -->
 
-The easiest way to install Syntax Highlighting is through [AnkiWeb](https://ankiweb.net/shared/info/XXXXXXX).
+The easiest way to install Syntax Highlighting is through [AnkiWeb](https://ankiweb.net/shared/info/566351439).
 
 #### Manual installation <!-- omit in toc -->
 
@@ -61,17 +58,7 @@ Please click on the entry corresponding to your Anki version:
 <details>
 
 <summary><i>Anki 2.0</i></summary>
-
-1. Go to *Tools* → *Add-ons* → *Open add-ons folder*
-2. Find and delete the `Syntax Highlighting.py` file if it already exists.
-3. See if you can find a `syntax_highlighting` folder. If so:
-    1. If the folder contains a `meta.json` file, copy the file to a safe location. This will allow you to preserve your current settings.
-    2. Proceed to delete the `syntax_highlighting` folder
-4. Download and extract the latest Anki 2.0 add-on release from the [releases tab](https://github.com/glutanimate/syntax-highlighting/releases) (you might need to click on *Assets* below the description to reveal the download links)
-5. Move the extracted `Syntax Highlighting.py` and `syntax_highlighting` into the add-ons folder
-6. Optional: Place the `meta.json` file back into the directory if you created a copy beforehand.
-7. Restart Anki
-
+**No support for 2.0**
 </details>
 
 ### Documentation
@@ -98,13 +85,18 @@ Contributions are welcome! Please review the [contribution guidelines](./CONTRIB
 
 ### License and Credits
 
+*Syntax Highlighting (NG)* is
+
+*Copyright © 2023- [Antonio Cavallo](https://github.com/cav71)*
+
 *Syntax Highlighting* is
 
-*Copyright © 2012-2015 [Tiago Barroso](https://github.com/tmbb)*
+*Copyright © 2018-2019 [Aristotelis P.](https://glutanimate.com/) (Glutanimate)*
 
 *Copyright © 2015 [Tim Rae](https://github.com/timrae)*
 
-*Copyright © 2018-2019 [Aristotelis P.](https://glutanimate.com/) (Glutanimate)*
+*Copyright © 2012-2015 [Tiago Barroso](https://github.com/tmbb)*
+
 
 *Syntax Highlighting* is based on [*Syntax Highlighting for Code*](https://github.com/tmbb/SyntaxHighlight) by [Tiago Barroso](https://github.com/tmbb). All credit for the original add-on goes to him. A major thanks is also due for [Tim Rae](https://github.com/timrae), who extended the original add-on with CSS support.
 
@@ -124,3 +116,4 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 <div align="center">The continued development of this add-on is made possible <br>thanks to my <a href="https://www.patreon.com/glutanimate">Patreon</a> and <a href="https://ko-fi.com/X8X0L4YV">Ko-Fi</a> supporters.
 <br>You guys rock ❤️ !</div>
 </b>
+
