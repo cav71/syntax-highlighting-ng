@@ -2,3 +2,4 @@
 # required to run compiled builds of the add-on within Anki
 aab
 pytest
+beautifulsoup4

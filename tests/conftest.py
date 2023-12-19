@@ -4,23 +4,31 @@ import types
 from pathlib import Path
 import pytest
 
+
 @pytest.fixture(scope="function")
 def assets(request):
 
     class Asset:
         def __init__(self):
             self.basedir = Path(__file__).parent
-        def lookup(self, path: Path) -> Path|None:
-            candidates = [
+            self.candidates = [
                 f"assets/{request.node.module.__name__}",
                 "assets",
             ]
-            for candidate in candidates:
+        def lookup(self, path: Path | str) -> Path|None:
+            for candidate in self.candidates:
                 if (target := (self.basedir / candidate / path)).exists():
                     return target
-        def read_text(self, path: Path) -> str|None:
-            if (path:=self.lookup(path)):
-                return path.read_text()
+
+        def read_text(self, path: Path | str, fallback: str|None=None) -> str|None:
+            if dest := self.lookup(path):
+                return dest.read_text()
+            if fallback is not None:
+                dest = self.basedir / self.candidates[0] / path
+                dest.parent.mkdir(exist_ok=True, parents=True)
+                dest.write_text(fallback)
+                return dest.read_text()
+
 
     return Asset()
 
