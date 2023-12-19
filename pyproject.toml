@@ -1,5 +1,6 @@
 [tool.ruff]
 target-version = "py39"
+line-length = 88
 
 ignore = [
     # may be undefined, or defined from star imports
