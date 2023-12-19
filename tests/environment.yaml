@@ -1,3 +1,4 @@
+python=3.9
 pytest
 attrs
 jsonschema
@@ -11,5 +12,4 @@ pre-commit
 bs4
 # need to run also:
 #   conda uninstall --force rpds-py
-#   pip install rpds-py
-#   pip install aab
+#   pip install rpds-py aab
