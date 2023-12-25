@@ -188,7 +188,7 @@ class SyntaxHighlightingOptions(QDialog):  # type: ignore
 def onOptionsCall(mw: AnkiQt) -> None:
     """Call settings dialog"""
     dialog = SyntaxHighlightingOptions(mw)
-    dialog.exec_()
+    dialog.exec()
 
 
 options_action = QAction("Syntax Highlighting Options ...", mw)  # type: ignore
