@@ -7,7 +7,8 @@ Main Module, hooks add-on methods into Anki.
 
 Copyright: (c) 2012-2015 Tiago Barroso <https://github.com/tmbb>
            (c) 2015 Tim Rae <https://github.com/timrae>
-           (c) 2018 Glutanimate <https://glutanimate.com/>
+           (c) 2018-2023 Glutanimate <https://glutanimate.com/>
+           (c) 2023- A. Cavallo <https://github.com/cav71>
 
 License: GNU AGPLv3 <https://www.gnu.org/licenses/agpl.html>
 """
