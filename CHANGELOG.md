@@ -26,7 +26,7 @@ If you enjoy Syntax Highlighting, please consider supporting my work on Patreon,
 
 ### Changed
 
-- update NOTES.md (internal)
+- update NOTES.md (internal) and main.py (copyright)
 - by default the generated html code doesn't get centered
 
 ### Fixed
