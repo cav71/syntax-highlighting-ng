@@ -77,3 +77,9 @@ Debug:
    ```bash
    PYDEVD_DISABLE_FILE_VALIDATION=1 open /Applications/Anki.app
    ```
+
+
+## Release
+  1. git tag -m "release" 0.0.3 
+  2. aab build release
+  3. upload to anki

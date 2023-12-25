@@ -17,6 +17,22 @@ If you enjoy Syntax Highlighting, please consider supporting my work on Patreon,
 
 
 ## [Unreleased]
+
+## [0.0.3] - 2023-12-25
+
+### Added
+
+### Removed
+
+### Changed
+
+- update NOTES.md (internal)
+- by default the generated html code doesn't get centered
+
+### Fixed
+
+- Fixed option menu (it didn't display due to QT API change)
+
 ## [0.0.2] - 2023-12-19
 
 ### Added
@@ -48,7 +64,8 @@ If you enjoy Syntax Highlighting, please consider supporting my work on Patreon,
 - fixes for python 3
 
 
-[Unreleased]: https://github.com/cav71/syntax-highlighting-ng/compare/v0.0.1...HEAD
+[Unreleased]: https://github.com/cav71/syntax-highlighting-ng/compare/v0.0.3...HEAD
+[0.0.3]: https://github.com/cav71/syntax-highlighting-ng/compare/v0.0.2...v0.0.3
 [0.0.2]: https://github.com/cav71/syntax-highlighting-ng/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/cav71/syntax-highlighting-ng/compare/v0.0.0-beta...v0.0.1
 
