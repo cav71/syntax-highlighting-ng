@@ -30,7 +30,7 @@ meta_path = os.path.join(consts.addon_path, "meta.json")
 # options across machines (but not on mobile)
 default_conf = {
     "linenos": True,  # show numbers by default
-    "centerfragments": True,  # Use <center> when generating code fragments
+    "centerfragments": False,  # Use <center> when generating code fragments
     "cssclasses": False,  # Use css classes instead of colors directly in html
     "defaultlangperdeck": True,  # Default to last used language per deck
     "deckdefaultlang": {},  # Map to store the default language per deck
