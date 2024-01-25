@@ -24,6 +24,8 @@ Quick cycle install:
 1. build
    ```bash
    aab build
+   (or)
+   aab build -d local current
    ```
 
 2. Install from GUI *from file* 

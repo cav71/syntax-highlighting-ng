@@ -28,7 +28,9 @@ from . import config, consts
 # always use shipped pygments library
 # FIXME: properly vendorize pygments, lest we interfere with
 # other add-ons that might be shipping their own pygments
-sys.path.insert(0, os.path.join(consts.addon_path, "libs"))
+sys.path.insert(
+    0, os.path.join(consts.addon_path, "libs", "pygments-2.17.2-py3-none-any.whl")
+)
 
 from pygments.lexers import get_all_lexers
 
