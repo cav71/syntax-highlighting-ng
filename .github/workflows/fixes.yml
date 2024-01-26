@@ -74,7 +74,7 @@ jobs:
       - name: Artifacts uploads
         uses: actions/upload-artifact@v4
         with:
-          name: anki-addon
+          name: anki-addon.zip
           path: |
             build/*.ankiaddon
         # Use always() to always run this step to publish test results when there are test failures
