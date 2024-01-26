@@ -1,4 +1,4 @@
-name: Fix buld
+name: Pull request
 
 on:
   push:
