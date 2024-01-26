@@ -1,8 +1,9 @@
 # Please note that these are only build dependencies. They are not
 # required to run compiled builds of the add-on within Anki
 aab
-pytest
 beautifulsoup4
-ruff
+lxml
 mypy
+pytest
 pytest-cov
+ruff
