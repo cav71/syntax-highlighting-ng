@@ -1,3 +1,5 @@
+# Build a anki addon package
+
 name: Pull request
 
 on:
