@@ -46,6 +46,18 @@ from aqt.utils import showWarning
 from anki.hooks import addHook, wrap
 
 
+# TODO come up with better way to do this upstream!
+def log_info(msg, *args):
+    log.info(msg, *args)
+    print(msg.__mod__(args))
+
+
+log_info(
+    "addon syntax_highlighting_ng loaded pygments %s",
+    getattr(pygments, "__version__", "N/A"),
+)
+
+
 HOTKEY = config.local_conf["hotkey"]
 STYLE = config.local_conf["style"]
 LIMITED_LANGS = config.local_conf["limitToLangs"]
