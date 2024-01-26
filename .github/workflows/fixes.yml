@@ -3,7 +3,7 @@ name: Fix buld
 on:
   push:
     branches:
-      - 'beta/**'
+      - 'fixes/**'
 
 jobs:
   build:
