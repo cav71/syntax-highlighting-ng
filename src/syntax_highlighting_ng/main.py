@@ -51,7 +51,7 @@ LIMITED_LANGS = config.local_conf["limitToLangs"]
 #                        to show the user AND
 #  The "language aliases": short, cryptic names for internal
 #                          use by HtmlFormatter
-LANGUAGES_MAP = {lex[0]: lex[1][0] for lex in get_all_lexers()}
+LANGUAGES_MAP = {lex[0]: lex[1][0] for lex in get_all_lexers() if len(lex) > 1}
 
 
 # Misc
