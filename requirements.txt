@@ -3,3 +3,6 @@
 aab
 pytest
 beautifulsoup4
+ruff
+mypy
+pytest-cov
