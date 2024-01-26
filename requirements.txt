@@ -6,4 +6,5 @@ lxml
 mypy
 pytest
 pytest-cov
+pytest-html
 ruff
