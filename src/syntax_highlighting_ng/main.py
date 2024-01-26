@@ -16,6 +16,7 @@ License: GNU AGPLv3 <https://www.gnu.org/licenses/agpl.html>
 from __future__ import unicode_literals, annotations
 
 import contextlib
+import logging
 import functools
 import os
 import sys
@@ -25,11 +26,16 @@ import traceback
 
 from . import config, consts
 
+log = logging.getLogger(__name__)
+
 # always use shipped pygments library
 # FIXME: properly vendorize pygments, lest we interfere with
 # other add-ons that might be shipping their own pygments
-sys.path.insert(0, os.path.join(consts.addon_path, "libs"))
+sys.path.insert(
+    0, os.path.join(consts.addon_path, "libs", "pygments-2.17.2-py3-none-any.whl")
+)
 
+import pygments
 from pygments.lexers import get_all_lexers
 
 from aqt.qt import *
@@ -38,6 +44,18 @@ from aqt.main import AnkiQt
 from aqt.editor import Editor
 from aqt.utils import showWarning
 from anki.hooks import addHook, wrap
+
+
+# TODO come up with better way to do this upstream!
+def log_info(msg, *args):
+    log.info(msg, *args)
+    print(msg.__mod__(args))
+
+
+log_info(
+    "addon syntax_highlighting_ng loaded pygments %s",
+    getattr(pygments, "__version__", "N/A"),
+)
 
 
 HOTKEY = config.local_conf["hotkey"]
