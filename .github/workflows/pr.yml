@@ -1,0 +1,83 @@
+# Build a anki addon package
+
+name: Pull request
+
+on:
+  push:
+    branches:
+      - 'fixes/**'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [macos-latest]
+        python-version: ["3.12"]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Dump env
+        shell: bash
+        env:
+          GITHUB_DUMP: ${{ toJson(github) }}
+        run: |
+          echo "github env:"
+          echo "$GITHUB_DUMP"
+
+      - name: Set up Python interpreter [${{ matrix.python-version }}]
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies from tests/requirements.txt
+        shell: bash
+        run: |
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+
+      #- name: Lint checks (ruff)
+      #  shell: bash
+      #  env:
+      #    PYTHONPATH: src
+      #  run: |
+      #     ruff check .
+
+      #- name: Static checks (mypy)
+      #  shell: bash
+      #  env:
+      #    PYTHONPATH: src
+      #    OUTDIR: build/qa-${{ matrix.python-version }}-${{ matrix.os}}
+      #  run: |
+      #    mypy src \
+      #      --no-incremental --xslt-html-report $OUTDIR/mypy
+
+      #- name: Runtime checks (pytest, coverage etc.)
+      #  shell: bash
+      #  env:
+      #    PYTHONPATH: src
+      #    OUTDIR: build/qa-${{ matrix.python-version }}-${{ matrix.os}}
+      #  run: |
+      #    py.test \
+      #        --cov=${{ env.PACKAGE }} \
+      #        --cov-report=html:$OUTDIR/coverage --cov-report=xml:$OUTDIR/coverage.xml \
+      #        --junitxml=$OUTDIR/junit/junit.xml --html=$OUTDIR/junit/junit.html --self-contained-html \
+      #      tests
+
+      - name: Build plugin package
+        if: ${{ ! contains(matrix.os, 'windows') }}
+        env:
+          GITHUB_DUMP: ${{ toJson(github) }}
+        run: |
+          aab build -d local current
+
+      - name: Artifacts uploads
+        uses: actions/upload-artifact@v4
+        with:
+          name: anki-addon.zip
+          path: |
+            build/*.ankiaddon
+        # Use always() to always run this step to publish test results when there are test failures
+        if: always()
