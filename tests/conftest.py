@@ -3,6 +3,7 @@ import sys
 import types
 from pathlib import Path
 import pytest
+from typing import Any, Callable
 
 
 @pytest.fixture(scope="function")
@@ -47,13 +48,23 @@ def fake_anki21(monkeypatch):
 
 
     class AnkiHooks(types.ModuleType):
-        def addHook(self):
+        def addHook(self, hook: str, func: Callable) -> None:
             return 999
 
     class Aqt(types.ModuleType):
         pass
 
+    # form anki.qt.aqt.addons.AddonManager
+    class AddonManager:
+        def getConfig(self, module: str) -> dict[str, Any] | None:
+            return {}
+
     class AqtMV(types.ModuleType):
+        @property
+        def addonManager(self):
+            self._addon_manager = getattr(self, "_addon_manager", AddonManager())
+            return self._addon_manager
+
         def callme(self):
             return 123
 
@@ -67,6 +78,8 @@ def fake_anki21(monkeypatch):
     for name, cls in replacements:
         old[name] = sys.modules.get(name)
         sys.modules[name] = cls(name)
+
+    monkeypatch.setenv("STANDALONE_ADDON", "1")
     yield old
     for name, mod in reversed(old.items()):
         if mod:

@@ -37,7 +37,7 @@ The main reasons are:
 
 #### AnkiWeb <!-- omit in toc -->
 
-The easiest way to install Syntax Highlighting is through [AnkiWeb](https://ankiweb.net/shared/info/566351439).
+The easiest way to install Syntax Highlighting is through [AnkiWeb - 566351439](https://ankiweb.net/shared/info/566351439).
 
 #### Manual installation <!-- omit in toc -->
 
@@ -104,7 +104,7 @@ The present fork and update to Anki 2.1 was made possible through the generous s
 
 *Syntax Highlighting* ships with the following third-party open-source software:
 
-- [Pygments](http://pygments.org/) v2.2.0. Copyright (c) 2006-2017 by the Pygments Team. Licensed under the BSD license.
+- [Pygments](http://pygments.org/) v2.17.2. Copyright (c) 2006-2023 by the Pygments Team. Licensed under the BSD license.
 
 Syntax Highlighting is free and open-source software. The add-on code that runs within Anki is released under the GNU AGPLv3 license, extended by a number of additional terms. For more information please see the [LICENSE](https://github.com/glutanimate/syntax-highlighting/blob/master/LICENSE) file that accompanied this program.
 

@@ -22,7 +22,9 @@ from ._version import __version__  # noqa: F401
 STANDALONE = False
 try:
     from . import main  # noqa: F401
-except ModuleNotFoundError:
+except ModuleNotFoundError as e:
     if not os.environ.get("STANDALONE_ADDON") == "1":
-        raise
+        raise RuntimeError(
+            "set env STANDALONE_ADDON=1 if you don't need anki modules"
+        ) from e
     STANDALONE = True

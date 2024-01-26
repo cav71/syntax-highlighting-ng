@@ -28,3 +28,11 @@ ban-relative-imports = "all"
 # Tests can use relative imports and assertions
 "tests/**/*" = ["TID252", "S101"]
 
+
+[[tool.mypy.overrides]]
+module = [
+    "pygments.*",
+    "aqt.*",
+    "anki.*",
+]
+ignore_missing_imports = true

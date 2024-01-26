@@ -18,7 +18,7 @@ def test_import_anki(fake_anki21):
 def test_import_anki_hooks(fake_anki21):
     "test the module import"
     from anki.hooks import addHook
-    assert addHook() == 999
+    assert addHook("setupEditorButtons", lambda: None) == 999
 
 def test_import_aqt(fake_anki21):
     #    from aqt import mw
