@@ -60,7 +60,17 @@ LANGUAGES_MAP = {lex[0]: lex[1][0] for lex in get_all_lexers() if lex[1]}
 
 # Misc
 
-log.info("loaded plugin pygments %s", getattr(pygments, "__version__", "N/A"))
+
+# TODO come up with better way to do this upstream!
+def log_info(msg, *args):
+    log.info(msg, *args)
+    print(msg.__mod__(args))
+
+
+log_info(
+    "addon syntax_highlighting_ng loaded pygments %s",
+    getattr(pygments, "__version__", "N/A"),
+)
 
 
 def showError(msg, parent):
