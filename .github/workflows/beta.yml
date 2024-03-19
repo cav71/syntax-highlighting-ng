@@ -5,7 +5,8 @@ on:
     branches:
       - 'beta/**'
 env:
-  XTARGET: "3.12"
+  XPYVER: "3.12"
+  XOS: "ubuntu-latest"
 
 jobs:
   build:
@@ -75,6 +76,8 @@ jobs:
           aab build -t anki21 -d local current
 
       - name: Artifacts uploads
+        if: ${{ matrix.python-version == env.XPYVER && matrix.os == env.XOS }}
+
         uses: actions/upload-artifact@v4
         with:
           name: plugin
@@ -125,7 +128,7 @@ jobs:
 #
 #      - name: "Upload coverage to Codecov"
 #        uses: codecov/codecov-action@v3
-#        if: ${{ matrix.python-version == env.XTARGET }}
+#        if: ${{ matrix.python-version == env.XPYVER }}
 #        with:
 #          token: ${{ secrets.CODECOV_TOKEN }}
 #          fail_ci_if_error: true
@@ -135,7 +138,7 @@ jobs:
 #
 #      - name: "Publish packages to pypi (beta)"
 #        uses: pypa/gh-action-pypi-publish@release/v1
-#        if: ${{ matrix.python-version == env.XTARGET }}
+#        if: ${{ matrix.python-version == env.XPYVER }}
 #        with:
 #          password: ${{ secrets.PYPI_API_TOKEN }}
 #
