@@ -3,7 +3,7 @@ name: Master build
 on:
   push:
     branches:
-      - master'
+      - master
 env:
   XPYVER: "3.12"
   XOS: "ubuntu-latest"
