@@ -11,8 +11,10 @@ Copyright: (c) 2018 Glutanimate <https://glutanimate.com/>
 License: GNU AGPLv3 <https://www.gnu.org/licenses/agpl.html>
 """
 import os
+import sys
 
 from ._version import __version__  # noqa: F401
+from .consts import addon_path
 
 # we need to import syntax_highlighting_ng without an installed anki,
 # hence this workaround
@@ -28,3 +30,10 @@ except ModuleNotFoundError as e:
             "set env STANDALONE_ADDON=1 if you don't need anki modules"
         ) from e
     STANDALONE = True
+
+# always use shipped pygments library
+# FIXME: properly vendorize pygments, lest we interfere with
+# other add-ons that might be shipping their own pygments
+sys.path.insert(
+    0, os.path.join(addon_path, "libs", "pygments-2.17.2-py3-none-any.whl")
+)

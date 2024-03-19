@@ -60,6 +60,7 @@ jobs:
         shell: bash
         env:
           PYTHONPATH: src
+          STANDALONE_ADDON: "1"
           OUTDIR: build/qa-${{ matrix.python-version }}-${{ matrix.os}}
         run: |
           py.test \

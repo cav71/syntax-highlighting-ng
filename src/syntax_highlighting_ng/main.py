@@ -28,13 +28,6 @@ from . import config, consts
 
 log = logging.getLogger(__name__)
 
-# always use shipped pygments library
-# FIXME: properly vendorize pygments, lest we interfere with
-# other add-ons that might be shipping their own pygments
-sys.path.insert(
-    0, os.path.join(consts.addon_path, "libs", "pygments-2.17.2-py3-none-any.whl")
-)
-
 import pygments
 from pygments.lexers import get_all_lexers
 
