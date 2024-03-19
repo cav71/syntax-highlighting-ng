@@ -67,13 +67,12 @@ jobs:
 #              --junitxml=$OUTDIR/junit/junit.xml --html=$OUTDIR/junit/junit.html --self-contained-html \
 #            tests
 #
-#      - name: Build wheel packages
-#        if: ${{ ! contains(matrix.os, 'windows') }}
-#        env:
-#          GITHUB_DUMP: ${{ toJson(github) }}
-#        run: |
-#          python -m build
-#          cat TEMPLATE.md
+      - name: Build anki plugin
+        if: ${{ ! contains(matrix.os, 'windows') }}
+        env:
+          GITHUB_DUMP: ${{ toJson(github) }}
+        run: |
+          aab -t anki21 -d local current
 #
 #      - name: Small fix
 #        run: touch .keepme
