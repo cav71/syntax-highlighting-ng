@@ -73,20 +73,15 @@ jobs:
           GITHUB_DUMP: ${{ toJson(github) }}
         run: |
           aab build -t anki21 -d local current
-#
-#      - name: Small fix
-#        run: touch .keepme
-#
-#      - name: Artifacts uploads
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: qa-results-${{ matrix.python-version }}-${{ matrix.os }}
-#          path: |
-#            build/qa-${{ matrix.python-version }}-${{ matrix.os}}
-#            dist
-#            .keepme
-#        # Use always() to always run this step to publish test results when there are test failures
-#        if: always()
+
+      - name: Artifacts uploads
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugin
+          path: |
+            build/syntax-highlighting_ng*
+        # Use always() to always run this step to publish test results when there are test failures
+        if: always()
 #
 #  publish:
 #    strategy:
