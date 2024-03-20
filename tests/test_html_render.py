@@ -96,7 +96,8 @@ def test_issue_9(fake_anki21, assets, htmlcompare):
     style = html_render.Style(
         language="javascript",
         style="github-dark",
-        linenos=False
+        linenos=False,
+        centered=True
     )
     found = html_render.render_string("""
 val testing = "a test"

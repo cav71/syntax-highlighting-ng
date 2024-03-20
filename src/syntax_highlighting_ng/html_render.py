@@ -14,6 +14,7 @@ class Style:
     noclasses: bool = True
     style: str = "default"
     language: str = "Python"
+    centered: bool = False
 
 
 class RenderError(Exception):
@@ -55,4 +56,8 @@ def render_string(txt: str, style: Style = Style()) -> str:
     except util.ClassNotFound as exc:
         raise InvalidStyle(style.style) from exc
 
-    return pygments.highlight(txt, lexer, formatter)
+    output = pygments.highlight(txt, lexer, formatter)
+    css = ""
+    if style.centered:
+       css = "style=\"margin: auto; width: 90%; padding: 10px;\""
+    return f"<div class=\"syntax-highlighting-ng\" {css}>{output}</div>"
