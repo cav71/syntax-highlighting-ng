@@ -108,7 +108,7 @@ def fake_anki21(monkeypatch):
 def htmlcompare(request):
     from bs4 import BeautifulSoup
 
-    dumpdir = Path(__file__).parent / "build" / "failures"
+    dumpdir = Path(__file__).parent.parent / "build" / "failures"
 
     destdir = dumpdir / request.node.module.__name__ / request.node.name
     destdir.mkdir(parents=True, exist_ok=True)
