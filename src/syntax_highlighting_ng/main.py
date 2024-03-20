@@ -405,23 +405,11 @@ def highlight_code(ed):
         style=STYLE,
         linenos="inline" if linenos is True else linenos,
         noclasses=noclasses,
+        centered=centerfragments
     )
 
     processed = html_render.render_string(code, style=style)
-
-    if linenos:
-        if centerfragments:
-            pretty_code = "".join(["<center>", processed, "</center><br>"])
-        else:
-            pretty_code = "".join([processed, "<br>"])
-    # TODO: understand why this is neccessary
-    else:
-        if centerfragments:
-            pretty_code = "".join(["<center>", processed, "</center><br>"])
-        else:
-            pretty_code = "".join([processed, "<br>"])
-
-    pretty_code = process_html(pretty_code)
+    pretty_code = process_html(f"{processed}<br>")
 
     # These two lines insert a piece of HTML in the current cursor position
     ed.web.eval(
