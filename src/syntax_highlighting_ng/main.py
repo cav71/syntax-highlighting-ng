@@ -19,7 +19,6 @@ import contextlib
 import logging
 import functools
 import os
-import sys
 import re
 import json
 import traceback

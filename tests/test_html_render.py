@@ -3,7 +3,6 @@ import os
 from pathlib import Path
 
 import pytest
-from bs4 import BeautifulSoup
 
 if os.getenv("STANDALONE_ADDON") != "1":
     raise pytest.skip(
@@ -17,7 +16,6 @@ DUMPDIR = Path(__file__).parent / "build" / "failures"
 
 
 def hcompare(assets, name, found):
-    from pathlib import Path
     DUMPDIR.mkdir(parents=True, exist_ok=True)
     expected = assets.read_text(name, fallback=found)
     def strip(txt):

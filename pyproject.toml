@@ -1,7 +1,9 @@
+
 [tool.ruff]
 target-version = "py39"
 line-length = 88
 
+[tool.ruff.lint]
 ignore = [
     # may be undefined, or defined from star imports
     "F405",
@@ -15,16 +17,17 @@ unfixable = [
   # Don't touch unused imports
   "F401",
 ]
-[tool.ruff.isort]
+
+[tool.ruff.lint.isort]
 known-first-party = ["syntax_highlighting_ng"]
 
-[tool.ruff.flake8-quotes]
+[tool.ruff.lint.flake8-quotes]
 inline-quotes = "double"
 
-[tool.ruff.flake8-tidy-imports]
+[tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "all"
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 # Tests can use relative imports and assertions
 "tests/**/*" = ["TID252", "S101"]
 
