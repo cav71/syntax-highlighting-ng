@@ -13,6 +13,39 @@ if os.getenv("STANDALONE_ADDON") != "1":
 
 from syntax_highlighting_ng import html_render
 
+DUMPDIR = Path(__file__).parent / "build" / "failures"
+
+
+def hcompare(assets, name, found):
+    from pathlib import Path
+    DUMPDIR.mkdir(parents=True, exist_ok=True)
+    expected = assets.read_text(name, fallback=found)
+    def strip(txt):
+        txt = txt.strip()
+        if txt.startswith("<html>") and txt.endswith("</html>"):
+            return txt[len("<html>"):-len("</html>")]
+        return txt
+
+    if found != expected:
+        left = strip(expected)
+        right = strip(found)
+        (DUMPDIR / name).write_text(f"""
+<html>
+ <head>
+  <style>
+   table {{ width: 100%; height: 100%; }}
+   td {{ vertical-align: top; width: 50% ; border: solid black 3px; }}
+  </style>
+ </head>
+ <body>
+  <table>
+    <tr><td>{left}</td><td>{right}</td></tr>
+  </table>
+ </body>
+</html>
+""")
+    return found == expected
+
 
 def test_invalid_language(fake_anki21):
     text = "a simple one-line"
@@ -44,15 +77,31 @@ If you set a custom style please make sure<br>
 you typed it correctly.
 """
 
-def test_render_simple(fake_anki21, assets):
+def test_render_simple(fake_anki21, assets, htmlcompare):
     text = "a simple one-line"
-    rendered = html_render.render_string(text)
-    found = BeautifulSoup(rendered).prettify()
-    assert found == assets.read_text("simple.html", fallback=found)
+    found = html_render.render_string(text)
+    expected = assets.read_text("simple.html", fallback=found)
+    assert htmlcompare(expected, found)
 
 
-def test_render_conftest(fake_anki21, assets):
-    src = Path(__file__).parent / "conftest.py"
-    rendered = html_render.render_string(src.read_text())
-    found = BeautifulSoup(rendered).prettify()
-    assert found == assets.read_text("conftest.html", fallback=found)
+def test_render_conftest(fake_anki21, assets, htmlcompare):
+    src = assets.lookup("conftest.py")
+    found = html_render.render_string(src.read_text())
+    expected = assets.read_text("conftest.html", fallback=found)
+    assert htmlcompare(expected, found)
+
+
+def test_issue_9(fake_anki21, assets, htmlcompare):
+    # use this: https://pygments.org/demo
+    style = html_render.Style(
+        language="javascript",
+        style="github-dark",
+        linenos=False
+    )
+    found = html_render.render_string("""
+val testing = "a test"
+val another_string = "yaaayyy"
+""", style)
+
+    expected = assets.read_text("issue_9.html", fallback=found)
+    assert htmlcompare(expected, found)
