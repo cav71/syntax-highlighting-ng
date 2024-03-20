@@ -40,13 +40,13 @@ jobs:
             pip install -r requirements.txt
             pip list
 
-#      - name: Lint checks (ruff)
-#        shell: bash
-#        env:
-#          PYTHONPATH: src
-#        run: |
-#           ruff check --verbose .
-#
+      - name: Lint checks (ruff)
+        shell: bash
+        env:
+          PYTHONPATH: src
+        run: |
+           ruff check .
+
 #      - name: Static checks (mypy)
 #        shell: bash
 #        env:
