@@ -410,17 +410,18 @@ def highlight_code(ed):
 
     processed = html_render.render_string(code, style=style)
 
-    if linenos:
-        if centerfragments:
-            pretty_code = "".join(["<center>", processed, "</center><br>"])
-        else:
-            pretty_code = "".join([processed, "<br>"])
-    # TODO: understand why this is neccessary
+    if centerfragments:
+        pretty_code = "".join(
+            [
+                "<center><table><tbody><tr><td>",
+                processed,
+                "</td></tr></tbody></table></center>",
+            ]
+        )
     else:
-        if centerfragments:
-            pretty_code = "".join(["<center>", processed, "</center><br>"])
-        else:
-            pretty_code = "".join([processed, "<br>"])
+        pretty_code = "".join(
+            ["<table><tbody><tr><td>", processed, "</td></tr></tbody></table>"]
+        )
 
     pretty_code = process_html(pretty_code)
 
