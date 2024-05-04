@@ -38,18 +38,12 @@ from aqt.editor import Editor
 from aqt.utils import showWarning
 from anki.hooks import addHook, wrap
 
+log = getattr(mw.addonManager, "get_logger", logging.getLogger)(__name__)
 
-# TODO come up with better way to do this upstream!
-def log_info(msg, *args):
-    log.info(msg, *args)
-    print(msg.__mod__(args))
-
-
-log_info(
+log.info(
     "addon syntax_highlighting_ng loaded pygments %s",
     getattr(pygments, "__version__", "N/A"),
 )
-
 
 HOTKEY = config.local_conf["hotkey"]
 STYLE = config.local_conf["style"]
@@ -409,17 +403,18 @@ def highlight_code(ed):
 
     processed = html_render.render_string(code, style=style)
 
-    if linenos:
-        if centerfragments:
-            pretty_code = "".join(["<center>", processed, "</center><br>"])
-        else:
-            pretty_code = "".join([processed, "<br>"])
-    # TODO: understand why this is neccessary
+    if centerfragments:
+        pretty_code = "".join(
+            [
+                "<center><table><tbody><tr><td>",
+                processed,
+                "</td></tr></tbody></table></center>",
+            ]
+        )
     else:
-        if centerfragments:
-            pretty_code = "".join(["<center>", processed, "</center><br>"])
-        else:
-            pretty_code = "".join([processed, "<br>"])
+        pretty_code = "".join(
+            ["<table><tbody><tr><td>", processed, "</td></tr></tbody></table>"]
+        )
 
     pretty_code = process_html(pretty_code)
 
