@@ -37,7 +37,7 @@ The main reasons are:
 
 #### AnkiWeb <!-- omit in toc -->
 
-The easiest way to install Syntax Highlighting is through [AnkiWeb - 566351439](https://ankiweb.net/shared/info/566351439).
+The easiest way to install Syntax Highlighting is through [AnkiWeb](https://ankiweb.net/shared/info/566351439) code `566351439`.
 
 #### Manual installation <!-- omit in toc -->
 
