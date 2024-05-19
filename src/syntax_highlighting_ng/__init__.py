@@ -21,6 +21,13 @@ from .consts import addon_path
 # an improved design would be shifting all the addon api ia separate module
 # (eg. addon.py) and leaving __init__.py almost empty
 
+# always use shipped pygments library
+# TODO: properly vendorize pygments, lest we interfere with
+#        other add-ons that might be shipping their own pygments
+sys.path.insert(
+    0, os.path.join(addon_path, "libs", "pygments-2.17.2-py3-none-any.whl")
+)
+
 STANDALONE = False
 try:
     from . import main  # noqa: F401
@@ -31,9 +38,3 @@ except ModuleNotFoundError as e:
         ) from e
     STANDALONE = True
 
-# always use shipped pygments library
-# FIXME: properly vendorize pygments, lest we interfere with
-# other add-ons that might be shipping their own pygments
-sys.path.insert(
-    0, os.path.join(addon_path, "libs", "pygments-2.17.2-py3-none-any.whl")
-)
