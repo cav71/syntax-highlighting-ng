@@ -19,7 +19,6 @@ import contextlib
 import logging
 import functools
 import os
-import sys
 import re
 import json
 import traceback
@@ -36,7 +35,7 @@ from aqt import mw
 from aqt.main import AnkiQt
 from aqt.editor import Editor
 from aqt.utils import showWarning
-from anki.hooks import addHook, wrap
+from anki.hooks import addHook
 
 log = getattr(mw.addonManager, "get_logger", logging.getLogger)(__name__)
 
@@ -45,6 +44,7 @@ log.info(
     getattr(pygments, "__version__", "N/A"),
 )
 
+LANG_ID = "syntax_highlighting_select"
 HOTKEY = config.local_conf["hotkey"]
 STYLE = config.local_conf["style"]
 LIMITED_LANGS = config.local_conf["limitToLangs"]
@@ -202,19 +202,6 @@ options_action.triggered.connect(lambda _, o=mw: onOptionsCall(o))
 mw.form.menuTools.addAction(options_action)
 
 
-# Highlighter initialization
-
-
-def init_highlighter(ed: Editor, *args, **kwargs):
-    # Get the last selected language (or the default language if the user
-    # has never chosen any)
-
-    previous_lang = get_default_lang(mw)
-    ed.codeHighlightLangAlias = LANGUAGES_MAP.get(previous_lang, "")
-
-
-# Highlighter widgets
-
 # button icon
 standardHeight = 20
 standardWidth = 20
@@ -295,28 +282,7 @@ QSplitter.add_plugin_button_ = add_plugin_button_  # type: ignore
 QSplitter.add_code_langs_combobox = add_code_langs_combobox  # type: ignore
 
 
-@ui_code
-def onCodeHighlightLangSelect(ed, lang):
-    from . import html_render
-
-    try:
-        alias = LANGUAGES_MAP[lang]
-    except KeyError:
-        ed.codeHighlightLangAlias = ""
-        raise html_render.LanguageNotFound(lang)
-    set_default_lang(mw, lang)
-    ed.codeHighlightLangAlias = alias
-
-
 # Editor widgets in Anki 2.1
-
-select_elm = (
-    """<select onchange='pycmd("shLang:" +"""
-    """ this.selectedOptions[0].text)' """
-    """style='vertical-align: top;'>{}</select>"""
-)
-
-
 def onSetupButtons21(buttons, ed):
     """Add buttons to Editor for Anki 2.1.x"""
     # no need for a lambda since onBridgeCmd passes current editor instance
@@ -345,7 +311,8 @@ def onSetupButtons21(buttons, ed):
     for lang in selection:
         options.append(option_str.format(lang))
 
-    combo = select_elm.format("".join(options))
+    select_elm = "<select id='{}' style='vertical-align: top;'>{}</select>"
+    combo = select_elm.format(LANG_ID, "".join(options))
     buttons.append(combo)
 
     return buttons
@@ -386,41 +353,52 @@ def highlight_code(ed):
         # '\u00A0' (non-breaking space). This character messes with the
         # formatter for highlighted code. To correct this, we replace all
         # '\u00A0' characters with regular space characters
-        code = selected_text.replace("\u00A0", " ")
+        code = selected_text.replace("\u00a0", " ")
     else:
         clipboard = QApplication.clipboard()
         # Get the code from the clipboard
         code = clipboard.text()
 
-    # Select the lexer for the correct language
-    style = html_render.Style(
-        # NOTE: we specify the language to highlight for
-        language=ed.codeHighlightLangAlias,
-        style=STYLE,
-        linenos="inline" if linenos is True else linenos,
-        noclasses=noclasses,
-    )
+    def callback(lang: str) -> None:
+        try:
+            alias = LANGUAGES_MAP[lang]
+        except KeyError:
+            raise html_render.LanguageNotFound(lang)
+        set_default_lang(mw, lang)
 
-    processed = html_render.render_string(code, style=style)
-
-    if centerfragments:
-        pretty_code = "".join(
-            [
-                "<center><table><tbody><tr><td>",
-                processed,
-                "</td></tr></tbody></table></center>",
-            ]
-        )
-    else:
-        pretty_code = "".join(
-            ["<table><tbody><tr><td>", processed, "</td></tr></tbody></table>"]
+        style = html_render.Style(
+            language=alias,
+            style=STYLE,
+            linenos="inline" if linenos is True else linenos,
+            noclasses=noclasses,
         )
 
-    pretty_code = process_html(pretty_code)
+        processed = html_render.render_string(code, style=style)
 
-    # These two lines insert a piece of HTML in the current cursor position
-    ed.web.eval(
-        "document.execCommand('inserthtml', false, %s);" % json.dumps(pretty_code)
+        if centerfragments:
+            pretty_code = "".join(
+                [
+                    "<center><table><tbody><tr><td>",
+                    processed,
+                    "</td></tr></tbody></table></center>",
+                ]
+            )
+        else:
+            pretty_code = "".join(
+                ["<table><tbody><tr><td>", processed, "</td></tr></tbody></table>"]
+            )
+
+        pretty_code = process_html(pretty_code)
+
+        # These two lines insert a piece of HTML in the current cursor position
+        ed.web.eval(
+            "document.execCommand('inserthtml', false, %s);" % json.dumps(pretty_code)
+        )
+
+    ed.web.evalWithCallback(
+        # Select the lexer for the correct language
+        f"document.getElementById('{LANG_ID}').selectedOptions[0].text",
+        callback,
     )
 
 
@@ -438,9 +416,4 @@ def process_html(html):
 
 
 # Hooks and monkey-patches
-
-
 addHook("setupEditorButtons", onSetupButtons21)
-Editor.onBridgeCmd = wrap(Editor.onBridgeCmd, onBridgeCmd, "around")
-
-Editor.__init__ = wrap(Editor.__init__, init_highlighter)
